@@ -1,0 +1,16 @@
+type Member {
+    id: ID!
+    name: String!
+    status: Status!
+    group: Group!
+}
+
+enum Status {
+    ACTIVE
+    INACTIVE
+    RETIRED
+}
+
+extend type Query {
+    members(status: Status): [Member!]!
+}

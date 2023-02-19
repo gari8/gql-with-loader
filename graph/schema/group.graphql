@@ -1,0 +1,10 @@
+type Group {
+    id: ID!
+    name: String!
+    description: String
+    members(status: Status): [Member!]!
+}
+
+extend type Query {
+    groups: [Group!]!
+}

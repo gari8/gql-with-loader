@@ -1,0 +1,31 @@
+version: 2.1
+
+jobs:
+  lint-and-test:
+    working_directory: ~/repo
+    docker:
+      - image: cimg/go:1.19.5
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - go-mod-v4-{{ checksum "go.sum" }}
+      - run:
+          name: Install Dependencies
+          command: |
+            go mod download
+            go install honnef.co/go/tools/cmd/staticcheck@latest
+      - save_cache:
+          key: go-mod-v4-{{ checksum "go.sum" }}
+          paths:
+            - "/go/pkg/mod"
+      - run:
+          name: Run lint
+          command: staticcheck ./...
+      - run:
+          name: Run test
+          command: go test -v ./...
+workflows:
+  test:
+    jobs:
+      - lint-and-test

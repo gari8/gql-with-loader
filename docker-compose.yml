@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+  server:
+    container_name: server
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    environment:
+      - DB_HOST=mysql_server
+      - DB_USER=test
+      - DB_NAME=test
+      - DB_PASSWORD=test
+    ports:
+      - "8080:8080"
+    tty: true
+    depends_on:
+      - mysql_server
+  mysql_server:
+    container_name: mysql_server
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test
+      MYSQL_USER: test
+      MYSQL_PASSWORD: test
